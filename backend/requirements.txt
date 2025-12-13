@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+motor
+pydantic
+praw
+tweepy
+requests
