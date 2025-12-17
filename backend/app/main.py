@@ -5,7 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="DataLeak Sentinel - Backend")
 
-# CORS (allow local frontend during development)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -16,13 +15,14 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def startup_db():
-    connect_db()
+    print(">>> CONNECT_DB CALLED")
+    await connect_db()
 
 @app.on_event("shutdown")
 async def shutdown_db():
-    close_db()
+    await close_db()
 
-app.include_router(posts.router)
+app.include_router(posts.router)  
 
 @app.get("/health")
 async def health():
