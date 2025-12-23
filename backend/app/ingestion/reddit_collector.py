@@ -13,8 +13,7 @@ REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID")
 REDDIT_CLIENT_SECRET = os.getenv("REDDIT_CLIENT_SECRET")
 REDDIT_USER_AGENT = os.getenv("REDDIT_USER_AGENT", "DataLeakSentinel/0.1")
 
-# create reddit instance
-reddit = praw.Reddit(
+reddit = praw.Reddit( 
     client_id=REDDIT_CLIENT_ID,
     client_secret=REDDIT_CLIENT_SECRET,
     user_agent=REDDIT_USER_AGENT,
@@ -28,7 +27,6 @@ def fetch_and_store(query: str = "leak|leaked|dump|credentials", limit: int = 50
 
     collection = db_module.db.posts
 
-    # use subreddit search if provided
     if subreddit:
         submissions = reddit.subreddit(subreddit).search(query, sort="new", limit=limit)
     else:
@@ -52,7 +50,6 @@ def fetch_and_store(query: str = "leak|leaked|dump|credentials", limit: int = 50
                 "permalink": sub.permalink,
             },
         }
-        # avoid duplicates by post_id
         existing = collection.find_one({"post_id": sub.id})
         if not existing:
             collection.insert_one(doc)
@@ -67,8 +64,7 @@ if __name__ == "__main__":
     parser.add_argument("--subreddit", default=None)
     args = parser.parse_args()
 
-    # NOTE: this script expects the FastAPI app to have called connect_db() (startup event)
-    # Easiest development flow: run uvicorn in another terminal so `db_module.db` is set.
+    #
     try:
         n = fetch_and_store(args.query, args.limit, args.subreddit)
         print(f"Inserted {n} reddit posts")

@@ -6,7 +6,7 @@ export default function SeverityChart({ data }) {
       <XAxis dataKey="name" />
       <YAxis />
       <Tooltip />
-      <Bar dataKey="count" fill="#6366f1" />
+      <Bar dataKey="count" fill="#6366f1"/>
     </BarChart>
   );
 }

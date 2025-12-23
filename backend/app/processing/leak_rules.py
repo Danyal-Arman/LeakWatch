@@ -5,7 +5,6 @@ EMAIL_RE = re.compile(r"[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}")
 IP_RE = re.compile(r"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b")
 URL_RE = re.compile(r"https?://\S+")
 
-# simple keyword lists relevant to data leaks
 LEAK_KEYWORDS = [
     "leak",
     "leaked",
@@ -50,10 +49,10 @@ def score_post(text: str) -> Dict[str, Any]:
     flags: List[str] = []
 
     if kws:
-        score += 30
+        score += 70
         flags.append("keywords: " + ",".join(kws))
     if emails:
-        score += 30
+        score += 40
         flags.append("emails")
     if ips:
         score += 15
@@ -66,9 +65,9 @@ def score_post(text: str) -> Dict[str, Any]:
     if score > 100:
         score = 100
 
-    if score >= 70:
+    if score >= 40:
         severity = "high"
-    elif score >= 40:
+    elif score >= 30:
         severity = "medium"
     else:
         severity = "low"
@@ -80,4 +79,4 @@ def score_post(text: str) -> Dict[str, Any]:
         "emails": emails,
         "ips": ips,
         "urls": urls,
-    }
+    } 
