@@ -4,5 +4,6 @@ python-dotenv
 motor
 pydantic
 praw
+groq
 tweepy
 requests

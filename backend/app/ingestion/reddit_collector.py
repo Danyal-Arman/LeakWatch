@@ -43,7 +43,7 @@ def fetch_and_store(query: str = "leak|leaked|dump|credentials", limit: int = 50
             "user": str(sub.author) if sub.author else None,
             "urls": [u for u in sub.url and [sub.url] or []],
             "timestamp": int(sub.created_utc),
-            "meta": meta,
+            "meta": meta, 
             "raw": {
                 "title": sub.title,
                 "selftext": sub.selftext,
