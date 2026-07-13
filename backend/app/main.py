@@ -2,9 +2,11 @@ from fastapi import FastAPI
 from .routes import posts
 from .utils.db import connect_db, close_db
 from fastapi.middleware.cors import CORSMiddleware
+from .routes import security
 
 app = FastAPI(title="DataLeak Sentinel - Backend")
-
+app.include_router(security.router)
+ 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

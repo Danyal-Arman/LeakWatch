@@ -1,10 +1,13 @@
 from fastapi import APIRouter, HTTPException, Query
 from ..utils import db as db_module
+from ..processing.leak_rules import score_post
 from ..models.post_model import PostCreate
+from ..services.ai_detector import ai_detect
 
 router = APIRouter(prefix="/posts", tags=["posts"])
 
 
+# @router.get("/")
 @router.get("/")
 async def list_posts(
     page: int = Query(1, ge=1),
@@ -25,8 +28,27 @@ async def list_posts(
     )
 
     posts = []
+
     async for doc in cursor:
+        # text = (
+        #     doc.get("text")
+        #     or doc.get("content")
+        #     or doc.get("description")
+        #     or ""
+        # )
+
+        # result = score_post(text)
+
+        # if result["score"] >= 70:
+        #     # ai_result = ai_detect(text)/
+
+        #     result["ai"] = ai_result
+
+        #     print("AI RESULT:", ai_result)
+
+        # doc["meta"] = result
         doc["_id"] = str(doc["_id"])
+
         posts.append(doc)
 
     total = await database.posts.count_documents({})
